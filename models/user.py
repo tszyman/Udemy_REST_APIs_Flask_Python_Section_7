@@ -19,41 +19,8 @@ class UserModel(db.Model):
     @classmethod
     def find_by_username(cls, username):
         
-        # using SQLAlchemy
         return cls.query.filter_by(username=username).first()
-        #without SQLAlchemy
-        '''connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        
-        query = "SELECT * FROM users WHERE username=?"
-        
-        result = cursor.execute(query, (username,)) # parameters always have to be in the form of TUPLE! (username,)
-        row = result.fetchone()
-        if row: # = if row is not None:
-            user = cls(*row)    # (row[0], row[1], row[2])
-        else:
-            user = None
-        
-        connection.close()
-        return user
-        '''
-    
     
     @classmethod
     def find_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
-        '''connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-        
-        query = "SELECT * FROM users WHERE id=?"
-        
-        result = cursor.execute(query, (_id,)) # parameters always have to be in the form of TUPLE! (username,)
-        row = result.fetchone()
-        if row: # = if row is not None:
-            user = cls(*row)    # (row[0], row[1], row[2])
-        else:
-            user = None
-        
-        connection.close()
-        return user
-        '''

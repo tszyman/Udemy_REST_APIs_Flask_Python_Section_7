@@ -23,13 +23,9 @@ class Item(Resource):
         
         if item:
             return item.json()
-        #else: we can skip else, cause if upper will not happen - we will exit the loop anyway 
         return {'message': 'Item does not exist.'}
 
     def post(self, name):
-        # if next(filter(lambda x: x['name'] == name, items), None):
-        #     # 400 = bad request code
-        #     return {'message': "An item with name '{}' already exists.".format(name)}, 400
         
         if ItemModel.find_by_name(name):
             return {'message': "An item with name '{}' already exists.".format(name)}, 400
@@ -45,20 +41,6 @@ class Item(Resource):
         return item.json(), 201  # return code 201 = Created
     
     def delete(self, name):
-        # global items
-        # items = list(filter(lambda x: x['name'] != name, items))
-        # return {'message': 'Item deleted'}
-        
-        # to db version
-        # connection = sqlite3.connect('data.db')
-        # cursor = connection.cursor()
-        
-        # query = "DELETE FROM items WHERE name = ?"
-        # cursor.execute(query, (name,))
-        
-        # connection.commit()
-        # connection.close()
-        # return {'message': 'Item deleted'}
         item = ItemModel.find_by_name(name)
         if item:
             item.delete_from_db()
@@ -68,26 +50,9 @@ class Item(Resource):
     def put(self, name):
 
         data = Item.parser.parse_args()
-        
-        
 
-        # tu robię trochę po swojemu, bo wydaje mi się bardziej elegancko
-        # item = ItemModel(name, data['price'])
-        # version without SQLAlchemy        
-        # if ItemModel.find_by_name(name):
-        #     try:
-        #         item.update()
-        #     except:
-        #         return {'message':'An error occured updating the item.'}, 500
-        # else:
-        #     try:
-        #         item.insert()
-        #     except:
-        #         return {'message': 'An error occured inserting the item.'}, 500
-        # return item.json()
-
-        #version with SQLAlchemy
         item = ItemModel.find_by_name(name)
+
         if item is None:
             item = ItemModel(name, data['price'], data['store_id'])
         else:
@@ -103,20 +68,3 @@ class Item(Resource):
 class ItemList(Resource):
     def get(self):
         return {'items': [item.json() for item in ItemModel.query.all()]} # using list comperhension
-        
-        # using lambda function
-        #return {'items': list(map(lambda x: x.json(), ItemModel.query.all()))}
-        
-        # withoit SQLAlchemy
-        '''connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-                       
-        query = "SELECT * FROM items"
-        result = cursor.execute(query)
-        items = []
-        for row in result:
-            items.append({'name':row[1], 'price': row[2]})
-           
-        connection.close()
-        
-        return {'items': items}'''
