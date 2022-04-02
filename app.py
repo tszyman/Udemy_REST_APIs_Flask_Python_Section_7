@@ -15,10 +15,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # turns off Flask SQLAlchem
 app.secret_key = 'tomek'
 api = Api(app)
 
-@app.before_first_request # decorator allowing to run function before first use of application
-def create_tables():
-    db.create_all()
-
 jwt = JWT(app, authenticate, identity)  # creates endpoint /auth
 
 api.add_resource(Item, '/item/<string:name>')
