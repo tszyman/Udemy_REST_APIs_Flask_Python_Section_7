@@ -12,7 +12,7 @@ from resources.store import Store, StoreList
 from db import db
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db') #first db is default, but if it's not provided (we run app locally) the second (local) db will be used
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL_2', 'sqlite:///data.db') #first db is default, but if it's not provided (we run app locally) the second (local) db will be used
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # turns off Flask SQLAlchemy modifications tracker, but does not turn of SQL Alchemy mod tracker
 app.secret_key = 'tomek'
 api = Api(app)
